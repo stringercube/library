@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    background-color: lightsalmon;
+    height: 20%;
+}
+
+.library {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background-color: blanchedalmond;
+}
+
+.library div {
+
+}
