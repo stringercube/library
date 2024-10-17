@@ -5,26 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Little library</title>
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <div class="header">
         <h1>Library</h1>
-        <button>NEW BOOK</button>
+        <button class="new-book"></button>
     </div>
+    <dialog>
+        <form method="dialog">
+            <label>Title:</label>
+            <input type="text" required>
+            <label>Author:</label>
+            <input type="text" required>
+            <label>Pages:</label>
+            <input type="number" required>
+            <label>Read?:</label>
+            <input type="checkbox" required>
+            <button type="submit">SUBMIT</button>
+            <button class="cancel">CANCEL</button>
+        </form>
+    </dialog>
     <div class="library">
-        <div class="book0">
-            <p class="title"></p>
-            <p class="author"></p>
-            <p class="pages"></p>
-            <p class="read"></p>
+        <div class="book">
+            <p class="title">Pride and Prejudice</p>
+            <p class="author">Jane Austen</p>
+            <p class="pages">279</p>
+            <p class="read">Yes</p>
             <button class="read">READ?</button>
             <button class="remove">REMOVE</button>
         </div>
-        <div class="book1">Book2</div>
-        <div class="book2">Book3</div>
-        <div class="book3">Book4</div>
-        <div class="book4">Book5</div>
-        <div class="book5">Book6</div>
+        <div class="book">
+            <p class="title">Pride and Prejudice</p>
+            <p class="author">Jane Austen</p>
+            <p class="pages">279</p>
+            <p class="read">Yes</p>
+            <button class="read">READ?</button>
+            <button class="remove">REMOVE</button>
+        </div>
+        <div class="book">
+            <p class="title">Pride and Prejudice</p>
+            <p class="author">Jane Austen</p>
+            <p class="pages">279</p>
+            <p class="read">Yes</p>
+            <button class="read">READ?</button>
+            <button class="remove">REMOVE</button>
+        </div>
     </div>
+    <script src="script.js"> </script>  
 </body>
 </html>
