@@ -10,13 +10,33 @@ function Book(title, author, pages, read) {
         console.log(this.title + " written by " + this.author
                 + " with " + this.pages + " pages that I " + isread)
     };
+    this.readit = function() {
+        if (this.read === 'yes') {
+            this.read = 'no';
+        } else {
+            this.read = 'yes';
+        }
+    };
 };
 
 
 function addBookToLibrary() {
-  // append book structure in html with consistent classes
-  // receives input from dialog form
-  // fill in info in html
+  // TODO append book structure in html with consistent classes
+  
+  
+  
+  
+  // TODO receives input from dialog form
+  
+  
+  
+  
+  // TODO push book to library
+  
+  
+  
+  
+  // TODO fill in info in html
 }
 
 // populate library with some books
@@ -62,14 +82,45 @@ function removeBook(event) {
 
 function toggle(event) {
     const activeBook = event.target.parentNode;
-    const isread = activeBook.querySelector('.read');
+    const index= activeBook.dataset.index;
     
-    if (isread.textContent === 'yes') {
-        isread.textContent = 'no';
-    } else {
-        isread.textContent = 'yes';
-    };
+    myLibrary[index].readit();
+
+    const isread = activeBook.querySelector('.read');
+    isread.textContent = myLibrary[index].read;
+
 };
+
+function createAndAppendElement(parent, tag, className, textContent = '') {
+    const element = document.createElement(tag);    // Create the element
+    element.classList.add(className);               // Add class
+    element.textContent = textContent;              // Set text content if provided
+    parent.appendChild(element);                    // Append it to the parent
+    return element;
+}
+
+function appendBookStruct() {
+    // Step 1: Create the new book element (div with class 'book')
+    const newBook = document.createElement('div');
+    newBook.classList.add('book');
+
+    // Step 2: Set the dataset index
+    newBook.dataset.index = myLibrary.length;
+
+    // Step 3: Create and append the title, author, pages, and read elements
+    createAndAppendElement(newBook, 'p', 'title');
+    createAndAppendElement(newBook, 'p', 'author'); 
+    createAndAppendElement(newBook, 'p', 'pages');
+    createAndAppendElement(newBook, 'p', 'read'); 
+
+    // Step 4: Create and append the 'read' and 'cancel' buttons
+    createAndAppendElement(newBook, 'button', 'read', 'READ?');
+    createAndAppendElement(newBook, 'button', 'cancel', 'CANCEL');
+
+    // Step 5: Append the newBook to the 'library' element
+    document.querySelector('.library').appendChild(newBook);
+}
+
 
 // TO DO add event listeners
 
@@ -88,7 +139,21 @@ document.addEventListener('click', function(event) {
 
 const dialog = document.querySelector('dialog');
 const addBook = document.querySelector('.new-book');
+const cancelButton = document.querySelector('dialog .cancel');
+const submitBook = document.querySelector('button[type="submit"]');
+
 
 addBook.addEventListener('click', () => {
     dialog.showModal();
+});
+
+// TO DO dialog submit
+
+
+
+
+// TO DO dialog close
+
+cancelButton.addEventListener('click', () => {
+    dialog.close();
 });
