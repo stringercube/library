@@ -21,23 +21,17 @@ function Book(title, author, pages, read) {
 
 
 function addBookToLibrary() {
-  // TODO append book structure in html with consistent classes
   
+  // receives input from dialog form
+    const inputData = fetchBookData();
   
-  
-  
-  // TODO receives input from dialog form
-  
-  
-  
-  
-  // TODO push book to library
-  
-  
-  
-  
-  // TODO fill in info in html
-}
+  // push book to library
+    const newEntry = new Book(...inputData);
+    myLibrary.push(newEntry);
+
+  //  append book in html with consistent classes and values
+    appendBookElement(...inputData);        // spread operator to spread array elements
+}   
 
 // populate library with some books
 
@@ -57,9 +51,7 @@ myLibrary.push(book3);
 
 document.addEventListener('DOMContentLoaded', () => {
     const booklist = document.querySelectorAll('.book');
-    let i = -1;
-    booklist.forEach((book) => {
-        i += 1;
+    booklist.forEach((book, i) => {         // iterator included in forEach
         let title = book.querySelector('.title');
         let author = book.querySelector('.author');
         let pages = book.querySelector('.pages');
@@ -75,19 +67,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function removeBook(event) {
     const activeBook = event.target.parentNode;
-    activeBook.remove();
+    const index = activeBook.dataset.index;
+    
+    let x = myLibrary.splice(index - 1, 1);     // removes book from myLibrary
+    activeBook.remove();                    // removes html element
+    indexUpdate();                          // rewrite html book index                 
 };
 
 // function to toggle read in each card
 
 function toggle(event) {
     const activeBook = event.target.parentNode;
+    indexUpdate();
     const index= activeBook.dataset.index;
     
-    myLibrary[index].readit();
+    myLibrary[index-1].readit();
 
     const isread = activeBook.querySelector('.read');
-    isread.textContent = myLibrary[index].read;
+    isread.textContent = myLibrary[index-1].read;
 
 };
 
@@ -99,7 +96,7 @@ function createAndAppendElement(parent, tag, className, textContent = '') {
     return element;
 }
 
-function appendBookStruct() {
+function appendBookElement(title, author, pages, read) {
     // Step 1: Create the new book element (div with class 'book')
     const newBook = document.createElement('div');
     newBook.classList.add('book');
@@ -107,24 +104,45 @@ function appendBookStruct() {
     // Step 2: Set the dataset index
     newBook.dataset.index = myLibrary.length;
 
-    // Step 3: Create and append the title, author, pages, and read elements
-    createAndAppendElement(newBook, 'p', 'title');
-    createAndAppendElement(newBook, 'p', 'author'); 
-    createAndAppendElement(newBook, 'p', 'pages');
-    createAndAppendElement(newBook, 'p', 'read'); 
+    // Step 3: Create and append the title, author, pages, and read elements with their values
+    createAndAppendElement(newBook, 'p', 'title', title);
+    createAndAppendElement(newBook, 'p', 'author', author); 
+    createAndAppendElement(newBook, 'p', 'pages', pages);
+    createAndAppendElement(newBook, 'p', 'read', read); 
 
     // Step 4: Create and append the 'read' and 'cancel' buttons
     createAndAppendElement(newBook, 'button', 'read', 'READ?');
-    createAndAppendElement(newBook, 'button', 'cancel', 'CANCEL');
+    createAndAppendElement(newBook, 'button', 'remove', 'REMOVE');
 
     // Step 5: Append the newBook to the 'library' element
     document.querySelector('.library').appendChild(newBook);
+    indexUpdate();
 }
 
+function fetchBookData() {
+    const dialog = document.querySelector('form');
+    const title = dialog.querySelector('.title').value;
+    const author = dialog.querySelector('.author').value;
+    const pages = dialog.querySelector('.pages').value;
+    const checkRead = dialog.querySelector('.read').checked;
+    const read = checkRead ? "yes" : "no";
+    return [title, author, pages, read];
+}
 
-// TO DO add event listeners
+// TO DO function that aligns index of html books and myLibrary after adding/removing
 
-// using event delegation
+function indexUpdate () {
+    const indexlist = document.querySelectorAll('[data-index]');
+    let indexValue = 0;
+    indexlist.forEach((index) => {
+        indexValue += 1;
+        index.dataset.index = indexValue;
+    })
+}
+
+// event listeners
+
+// using event delegation for read remove book buttons
 
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('read')) {
@@ -142,17 +160,19 @@ const addBook = document.querySelector('.new-book');
 const cancelButton = document.querySelector('dialog .cancel');
 const submitBook = document.querySelector('button[type="submit"]');
 
-
 addBook.addEventListener('click', () => {
     dialog.showModal();
 });
 
-// TO DO dialog submit
+// dialog submit
+submitBook.addEventListener('click', function(event) {
+    event.preventDefault();         // ensures not page reloading
+    addBookToLibrary();
+    dialog.close();
+});
 
 
-
-
-// TO DO dialog close
+// dialog close
 
 cancelButton.addEventListener('click', () => {
     dialog.close();
