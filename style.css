@@ -1,19 +1,109 @@
 
+:root {
+
+}
+
+body {
+    display: grid;
+    margin: 0;
+    grid-template-rows: 1fr 10fr;
+    height: 100vh;
+}
+
 
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     flex-direction: row;
-    background-color: lightsalmon;
-    height: 20%;
+    background-color: rgb(143, 83, 4);
+    align-items: center;
+}
+
+.header h1 {
+    font-family: Superclarendon, 'Bookman Old Style', 'URW Bookman', 'URW Bookman L', 'Georgia Pro', Georgia, serif;
+    font-weight: 500;
+    color: #f4b860;
+    font-size: 80px;
+    letter-spacing: 10px;
+    padding-left: 20%;
+}
+
+.new-book {
+    background-color: #f4b860;
+    color: #3e2a1c; 
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0px; /* text centered */
+    margin-right: 50px; 
+    border: 2px solid #3e2a1c; 
+    border-radius: 12px; 
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    transition: all 0.2s ease-in-out; 
+    height: clamp(40px, 10%, 150px); /* Adjusted height for better flexibility */
+    width: max(300px, 30%); /* Automatically size based on content */
+}
+
+/* Hover effect */
+.new-book:hover {
+    background-color: #f0a23e; 
+    color: #2f1e12; 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+/* Active/Pressed effect */
+.new-book:active {
+    background-color: #d7893c; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); 
+    transform: scale(1);
 }
 
 .library {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2px;
     background-color: blanchedalmond;
 }
 
-.library div {
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    border-style: solid;
+    border-radius: 8px;
+}
+
+.info-container {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    writing-mode: sideways-lr;
+    align-self: center;
+    margin-bottom: 60px;
+    margin-top: 10px;
+}
+
+.info-container p {
+    flex-wrap: wrap;
+    text-align: center;
 
 }
 
+p.read,
+p.pages {
+    display: none;
+}   
+
+.book button {
+    background-color: transparent;
+    border-style: none;
+    width: max(40px, 20%);
+    cursor: pointer;
+}
+
+img {
+    pointer-events: none;
+}

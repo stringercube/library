@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         author.textContent = myLibrary[i].author;
         pages.textContent = myLibrary[i].pages;
         read.textContent = myLibrary[i].read;
+        
+        const pageCount = myLibrary[i].pages;
+        book.style.width = `${pageCount / 1.5}px`; // Make books wider relative to their page count
+        book.style.height = '500px';
+        book.style.backgroundColor = bookColor();
     });    
 });
 
@@ -88,9 +93,11 @@ function toggle(event) {
 
 };
 
-function createAndAppendElement(parent, tag, className, textContent = '') {
+function createAndAppendElement(parent, tag, className = '', textContent = '') {
     const element = document.createElement(tag);    // Create the element
-    element.classList.add(className);               // Add class
+    if (className != '') {
+        element.classList.add(className);               // Add class
+    }
     element.textContent = textContent;              // Set text content if provided
     parent.appendChild(element);                    // Append it to the parent
     return element;
@@ -105,18 +112,37 @@ function appendBookElement(title, author, pages, read) {
     newBook.dataset.index = myLibrary.length;
 
     // Step 3: Create and append the title, author, pages, and read elements with their values
-    createAndAppendElement(newBook, 'p', 'title', title);
-    createAndAppendElement(newBook, 'p', 'author', author); 
-    createAndAppendElement(newBook, 'p', 'pages', pages);
-    createAndAppendElement(newBook, 'p', 'read', read); 
+    createAndAppendElement(newBook, 'div', 'info-container');
+
+    const info = newBook.querySelector('.info-container');
+    createAndAppendElement(info, 'p', 'title', title);
+    createAndAppendElement(info, 'p', 'author', author); 
+    createAndAppendElement(info, 'p', 'pages', pages);
+    createAndAppendElement(info, 'p', 'read', read); 
 
     // Step 4: Create and append the 'read' and 'cancel' buttons
-    createAndAppendElement(newBook, 'button', 'read', 'READ?');
-    createAndAppendElement(newBook, 'button', 'remove', 'REMOVE');
+    createAndAppendElement(newBook, 'button', 'read');
+    createAndAppendElement(newBook, 'button', 'remove');
 
-    // Step 5: Append the newBook to the 'library' element
+    // Step 5: Associate icons to the buttons
+    const readBtn = newBook.querySelector('button.read');
+    const removeBtn = newBook.querySelector('button.remove');
+    createAndAppendElement(readBtn, 'img');
+    createAndAppendElement(removeBtn, 'img');
+
+    readBtn.querySelector('img')
+        .setAttribute('src', 'icons/local_library_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg');
+    removeBtn.querySelector('img')
+        .setAttribute('src', 'icons/delete_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg');
+
+    // Step 6: Append the newBook to the 'library' element
     document.querySelector('.library').appendChild(newBook);
     indexUpdate();
+
+    // Step 7: Set width accordingly to the pages and book color
+    newBook.style.width = `${pages / 1.5}px`; // Make books wider relative to their page count
+    newBook.style.height = '500px';
+    newBook.style.backgroundColor = bookColor();
 }
 
 function fetchBookData() {
@@ -129,7 +155,7 @@ function fetchBookData() {
     return [title, author, pages, read];
 }
 
-// TO DO function that aligns index of html books and myLibrary after adding/removing
+// function that aligns index of html books and myLibrary after adding/removing
 
 function indexUpdate () {
     const indexlist = document.querySelectorAll('[data-index]');
@@ -139,6 +165,14 @@ function indexUpdate () {
         index.dataset.index = indexValue;
     })
 }
+
+// function for random book color
+
+function bookColor() {
+    const choices = ['red', 'green', 'blue'];
+    return choices[Math.floor(Math.random() * 3)];
+}
+
 
 // event listeners
 
@@ -173,7 +207,6 @@ submitBook.addEventListener('click', function(event) {
 
 
 // dialog close
-
 cancelButton.addEventListener('click', () => {
     dialog.close();
 });
