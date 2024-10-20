@@ -43,7 +43,7 @@ const book2 = new Book('To Kill a Mockingbird', 'Harper Lee', 281, 'no');
 
 myLibrary.push(book2);
 
-const book3 = new Book('1984', 'George Orwell', 328, 'yes');
+const book3 = new Book('1984', 'George Orwell', 328, 'no');
 
 myLibrary.push(book3);
 
@@ -84,12 +84,17 @@ function removeBook(event) {
 function toggle(event) {
     const activeBook = event.target.parentNode;
     indexUpdate();
-    const index= activeBook.dataset.index;
+    const index = activeBook.dataset.index;
     
     myLibrary[index-1].readit();
 
     const isread = activeBook.querySelector('.read');
     isread.textContent = myLibrary[index-1].read;
+
+    const readIcon = activeBook.querySelector('.read img');
+    readIcon.style.color = 'green';
+
+
 
 };
 
