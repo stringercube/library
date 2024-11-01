@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         author.textContent = myLibrary[i].author;
         pages.textContent = myLibrary[i].pages;
         read.textContent = myLibrary[i].read;
+
+        if (read.textContent === 'no') {
+            const readBtn = book.querySelector('img');
+            readBtn.classList.add('not-read');
+        };
         
         const pageCount = myLibrary[i].pages;
         book.style.width = `${pageCount / 1.5}px`; // Make books wider relative to their page count
@@ -90,12 +95,14 @@ function toggle(event) {
 
     const isread = activeBook.querySelector('.read');
     isread.textContent = myLibrary[index-1].read;
+    
+    const readIcon = activeBook.querySelector('img');
 
-    const readIcon = activeBook.querySelector('.read img');
-    readIcon.style.color = 'green';
-
-
-
+    if (isread.textContent === 'yes') {
+        readIcon.classList.remove('not-read');
+    } else {
+        readIcon.classList.add('not-read');
+    };
 };
 
 function createAndAppendElement(parent, tag, className = '', textContent = '') {
@@ -148,6 +155,13 @@ function appendBookElement(title, author, pages, read) {
     newBook.style.width = `${pages / 1.5}px`; // Make books wider relative to their page count
     newBook.style.height = '500px';
     newBook.style.backgroundColor = bookColor();
+
+    // Step 8: Set read icon with right color
+    const readIcon = newBook.querySelector('img');
+
+    if (read === "no") {
+        readIcon.classList.add('not-read');
+    };
 }
 
 function fetchBookData() {
@@ -204,6 +218,7 @@ addBook.addEventListener('click', () => {
 });
 
 // dialog submit
+
 submitBook.addEventListener('click', function(event) {
     event.preventDefault();         // ensures not page reloading
     addBookToLibrary();
@@ -212,6 +227,9 @@ submitBook.addEventListener('click', function(event) {
 
 
 // dialog close
+
 cancelButton.addEventListener('click', () => {
     dialog.close();
 });
+
+// TO DO add event listener to info containers to edit existing info
